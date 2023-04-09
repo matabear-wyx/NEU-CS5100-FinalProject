@@ -46,7 +46,7 @@ optimizer = optim.SGD(model.parameters(), lr=0.001, momentum=0.9)
 
 # Train the model
 num_epochs = 10
-train_losses, val_losses = [], []
+train_losses, val_losses, val_accuracy_list = [], [], []
 for epoch in range(num_epochs):
     train_loss = 0.0
     val_loss = 0.0
@@ -76,6 +76,7 @@ for epoch in range(num_epochs):
     val_loss = val_loss / len(val_loader.dataset)
     train_losses.append(train_loss)
     val_losses.append(val_loss)
+    val_accuracy_list.append(val_accuracy)
     val_accuracy = correct_predictions / total_predictions
     print(f'Epoch: {epoch+1}  Training Loss: {train_loss:.4f}  Validation Loss: {val_loss:.4f}  Validation Accuracy: {val_accuracy:.4f}')
 
@@ -84,11 +85,21 @@ if not os.path.exists("./output"):
     os.makedirs("./output")
 torch.save(model.state_dict(), "./output/emotion_detection_model_grayscale.pth")
 
-# Plot the training and validation losses
+# Plot the training and validation losses and accuracy
+plt.figure(figsize=(10,5))
+plt.subplot(1,2,1)
 plt.plot(train_losses, label="Training loss")
 plt.plot(val_losses, label="Validation loss")
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
 plt.legend()
-plt.savefig("./output/loss_plot.png")
+
+plt.subplot(1,2,2)
+plt.plot(val_accuracy_list, label="Validation accuracy")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.legend()
+
+plt.tight_layout()
+plt.savefig("./output/training_plot.png")
 
