@@ -7,7 +7,7 @@ import model
 
 # Define input image path and trained model file path
 image_path = "./data/test/"
-model_path = "./output/emotion_detection_model_grayscale.pth"
+model_path = "./output/emotion_detection_model_grayscale_best.pth"
 
 # Define data transforms for input images
 data_transforms = transforms.Compose([

@@ -76,8 +76,14 @@ for epoch in range(num_epochs):
     val_loss = val_loss / len(val_loader.dataset)
     train_losses.append(train_loss)
     val_losses.append(val_loss)
-    val_accuracy_list.append(val_accuracy)
     val_accuracy = correct_predictions / total_predictions
+    val_accuracy_list.append(val_accuracy)
+    if val_accuracy >= 0.95:  # If validation accuracy is 95% or higher, stop training and save the model
+        print(f'Validation accuracy of {val_accuracy:.4f} reached. Stopping training.')
+        if not os.path.exists("./output"):
+            os.makedirs("./output")
+        torch.save(model.state_dict(), "./output/emotion_detection_model_grayscale_best.pth")
+        break  # Exit the training loop
     print(f'Epoch: {epoch+1}  Training Loss: {train_loss:.4f}  Validation Loss: {val_loss:.4f}  Validation Accuracy: {val_accuracy:.4f}')
 
 # Save the trained model
@@ -100,6 +106,8 @@ plt.xlabel("Epoch")
 plt.ylabel("Accuracy")
 plt.legend()
 
+if not os.path.exists("./output"):
+    os.makedirs("./output")
 plt.tight_layout()
 plt.savefig("./output/training_plot.png")
 

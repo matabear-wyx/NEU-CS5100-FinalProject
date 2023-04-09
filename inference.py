@@ -19,7 +19,7 @@ classes = ["Angry", "Fear", "Happy", "Sadness", "Surprise"]
 
 # Load the trained model
 model = model.EmotionDetector()
-model.load_state_dict(torch.load("./output/emotion_detection_model_grayscale.pth"))
+model.load_state_dict(torch.load("./output/emotion_detection_model_grayscale_best.pth"))
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 model.to(device)
 model.eval()
